@@ -14,7 +14,7 @@ add_action( 'after_setup_theme', function () {
 /* Add favicon from MB severs */
 add_action ('wp_head', 'add_favicon');
 function add_favicon() { ?>
-<link href="http://www.kantar.com/favicon.ico" rel="shortcut icon" type="image/x-icon">
+<link href="https://www.kantar.com/favicon.ico" rel="shortcut icon" type="image/x-icon">
 <?php }
 
 /* Change logo to custom one on login page */
@@ -87,21 +87,21 @@ function comments_unique_users() {
 	return $unique;
 }
 
-/* Checks if user has already commented in post */
-function commented_checkmark() {
-
-	global $wpdb, $post;
-	// $comments_query = new WP_Comment_Query;
-
-	$comment_args = array(
+function user_commented() {
+  global $wpdb, $post;
+  $comment_args = array(
         'post_id' 	=> $post->ID,
         'user_id' 	=> get_current_user_id(),
         'count' 	=> true
     );
-
   $user_comments = get_comments($comment_args);
+  return ( $user_comments > 0 ) ? true : false;
+}
 
-	if( $user_comments > 0 ) {
+/* Checks if user has already commented in post */
+function commented_checkmark() {
+
+	if( user_commented() ) {
 		$checkmark_status = "fas fa-check-square";
 		$checkmark_title = _x("You have commented in this topic.",'Checkmark alt text for topics.','sparkling-child');
 	} else {

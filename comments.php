@@ -34,7 +34,16 @@ if ( post_password_required() ) {
 
 	<?php if( comon_expiry() ) { comment_form(); } else { $paging = "1000"; } ?>
 
-	<?php if ( have_comments() ) : ?>
+	<?php
+	# Comments will only be visible until user comments if enabled in post settings.
+	if( current_user_can('edit_posts') ) {
+		$show_comments = true;
+	} else {
+		$show_comments = ( get_field('hidden_until_comment') && user_commented() );
+	}
+	?>
+
+	<?php if ( have_comments() and $show_comments ) : ?>
 		<h3 class="comments-title">
 			<?php
                 if( current_user_can('edit_posts') ) {
